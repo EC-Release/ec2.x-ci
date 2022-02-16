@@ -1,0 +1,83 @@
+name: Seeder DB Sync (Beta)
+on:
+  workflow_call:
+    inputs:
+      INST_NAME:
+        required: true
+        type: string
+    secrets:
+      EC_GITHUB_TOKEN:
+        required: true
+  workflow_dispatch:
+    inputs:
+      INST_NAME:
+        description: The name associated with the credential set for this instance.
+        required: true
+        default: seederAdm
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    environment: beta
+    env:
+      #AGENT_REV: "1.2-b.0.reiwa"
+      AGENT_REV: "temp"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Seeder DB Replication
+        id: sdr-db-repl
+        env:
+          EC_AGT_GRP: test-group
+          EC_AGT_MODE: x:gateway
+          EC_API_APP_NAME: ec
+          EC_PORT: ":17990"
+          EC_SEED_HOST: "http://localhost:17790"
+          EC_GITHUB_TOKEN: ${{ secrets.EC_GITHUB_TOKEN }}
+          INST_NAME: ${{ inputs.INST_NAME || github.event.inputs.INST_NAME }}
+        run: |
+          source <(wget -O - https://raw.githubusercontent.com/EC-Release/sdk/disty/scripts/agt/v1.2beta.linux64.txt) -ver
+          source <(wget -O - https://raw.githubusercontent.com/EC-Release/sdk/disty/scripts/libs/keystore.sh)        
+          crdj=$(getCredJson "cred.json")
+          
+          #get sdc adm cred
+          CA_PPRS=$(echo $crdj | jq ".${INST_NAME}.ownerHash" | sed 's/"//g')          
+          EC_API_DEV_ID=$(echo $crdj | jq ".${INST_NAME}.devId" | sed 's/"//g')
+          EC_API_OA2=$(echo $crdj | jq ".${INST_NAME}.oauthURL" | sed 's/"//g')  
+          EC_SEED_NODE=$(echo $crdj | jq ".${INST_NAME}.instURL" | sed 's/"//g')  
+          DB_NAME=${INST_NAME}.db
+          INST_LOG=${INST_NAME}.log
+          
+          mkdir -p ./.ec ./dbs
+          setDb "$DB_NAME"
+          tree ./
+          
+          timeout -k 15 15 \
+          docker run \
+          -e AGENT_REV=${AGENT_REV} \
+          -e CA_PPRS=${CA_PPRS} \
+          -e EC_AGT_GRP=${EC_AGT_GRP} \
+          -e EC_AGT_MODE=${EC_AGT_MODE} \
+          -e EC_API_APP_NAME=${EC_API_APP_NAME} \
+          -e EC_API_DEV_ID=${EC_API_DEV_ID} \
+          -e EC_API_OA2=${EC_API_OA2} \
+          -e EC_PORT=${EC_PORT} \
+          -e EC_SEED_HOST=${EC_SEED_HOST} \
+          -e EC_SEED_NODE=${EC_SEED_NODE} \
+          -v $(pwd)/.ec:/root/.ec \
+          -t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
+          
+          ls -al ./.ec/.db
+          cp ./.ec/.db ./dbs/${DB_NAME}
+          cp ${INST_LOG} ./dbs/${INST_LOG}
+          
+      - name: Seeder DB Check-in
+        id: sdr-db-check-in
+        uses: ec-release/github-action-copy-files-folders-to-another-repos@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.EC_GITHUB_TOKEN }}
+          GIT_USEREMAIL: EC.Bot@ge.com
+          GIT_USERNAME: EC.Bot
+        with:
+          SOURCE_DIR: 'dbs'
+          DESTINATION_REPOS_BRANCHES: 'github.com/EC-Release/data-storage.git:main'
+          COMMIT_MESSAGE: 'Seeder DB Check-in'
