@@ -6,19 +6,19 @@ on:
     #- cron: '*/6 * * * *'
 jobs:
   sdc-admin-dbsync:
-    uses: EC-Release/deployment-ci/.github/workflows/dbsync-sdc.yml@main
+    uses: EC-Release/ec2.x-ci/.github/workflows/dbsync-sdc.yml@main
     with:
       INST_NAME: sdcAdm
     secrets:
       EC_GITHUB_TOKEN: ${{ secrets.EC_GITHUB_TOKEN }}
   seeder-admin-dbsync:
-    uses: EC-Release/deployment-ci/.github/workflows/dbsync-seeder.yml@main
+    uses: EC-Release/ec2.x-ci/.github/workflows/dbsync-seeder.yml@main
     with:
       INST_NAME: seederAdm
     secrets:
       EC_GITHUB_TOKEN: ${{ secrets.EC_GITHUB_TOKEN }}
   seeder-admin-backup-dbsync:
-    uses: EC-Release/deployment-ci/.github/workflows/dbsync-seeder.yml@main
+    uses: EC-Release/ec2.x-ci/.github/workflows/dbsync-seeder.yml@main
     with:
       INST_NAME: seederAdmBkp
     secrets:
