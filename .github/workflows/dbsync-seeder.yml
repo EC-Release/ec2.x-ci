@@ -44,7 +44,7 @@ jobs:
           EC_API_DEV_ID=$(echo $crdj | jq ".${INST_NAME}.devId" | sed 's/"//g')
           EC_API_OA2=$(echo $crdj | jq ".${INST_NAME}.oauthURL" | sed 's/"//g')  
           EC_SEED_NODE=$(echo $crdj | jq ".${INST_NAME}.instURL" | sed 's/"//g')  
-          DB_NAME=${INST_NAME}.db
+          DB_NAME=$(echo $crdj | jq ".${INST_NAME}.db" | sed 's/"//g') 
           INST_LOG=${INST_NAME}.log
           
           mkdir -p ./.ec ./dbs
