@@ -43,7 +43,7 @@ jobs:
           CA_PPRS=$(echo $crdj | jq ".${INST_NAME}.ownerHash" | sed 's/"//g')          
           EC_SEED_NODE=$(echo $crdj | jq ".${INST_NAME}.instURL" | sed 's/"//g')  
           EC_OAUTH_FAIL_URL=$(echo $crdj | jq ".${INST_NAME}.failURL" | sed 's/"//g')  
-          DB_NAME=${INST_NAME}.db
+          DB_NAME=$(echo $crdj | jq ".${INST_NAME}.db" | sed 's/"//g')
           INST_LOG=${INST_NAME}.log
           echo "LIC_ID:" $LIC_ID          
           
