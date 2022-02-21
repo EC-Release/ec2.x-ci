@@ -13,13 +13,14 @@ jobs:
       EC_GITHUB_TOKEN: ${{ secrets.EC_GITHUB_TOKEN }}
   sdc-admin-backup-dbsync:
     uses: EC-Release/ec2.x-ci/.github/workflows/dbsync-sdc.yml@main
+    needs: [sdc-admin-dbsync]
     with:
       INST_NAME: sdcAdmBkp
     secrets:
       EC_GITHUB_TOKEN: ${{ secrets.EC_GITHUB_TOKEN }}
   seeder-admin-dbsync:
     uses: EC-Release/ec2.x-ci/.github/workflows/dbsync-seeder.yml@main
-    needs: [sdc-admin-dbsync]
+    needs: [sdc-admin-backup-dbsync]
     with:
       INST_NAME: seederAdm
     secrets:
@@ -32,7 +33,7 @@ jobs:
     secrets:
       EC_GITHUB_TOKEN: ${{ secrets.EC_GITHUB_TOKEN }}
   team-notification:
-    needs: [sdc-admin-dbsync, seeder-admin-dbsync, seeder-admin-backup-dbsync]
+    needs: [sdc-admin-dbsync, seeder-admin-dbsync, seeder-admin-backup-dbsync, sdc-admin-backup-dbsync]
     runs-on: ubuntu-latest
     environment: beta
     env:
