@@ -47,8 +47,8 @@ jobs:
           INST_LOG=${INST_NAME}.log
           echo "LIC_ID:" $LIC_ID          
           
-          getPublicCrt "$LIC_ID" > ./tmp.cer          
-          csr_id=$(getCSRIDByCrtDir tmp.cer)
+          getPublicCrt "$LIC_ID" > ./tmp.cer         
+          csr_id=$(getCSRIDByCrtDir ./tmp.cer)
           echo "csr_id:" $csr_id
           getPrivateKey "$csr_id" > ./tmp.key
           
