@@ -50,7 +50,9 @@ jobs:
           setDb "$DB_NAME"
           tree ./
           
-          timeout 15 \
+          timeout --version
+          
+          timeout -k 15 15 \
           docker run \
           -e AGENT_REV=${AGENT_REV} \
           -e CA_PPRS=${CA_PPRS} \
