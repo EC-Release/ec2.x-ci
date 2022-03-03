@@ -72,7 +72,7 @@ jobs:
           
           sleep 15
           
-          docker logs --detail refc > ${INST_LOG}
+          docker logs refc > ${INST_LOG}
           
           ls -al ./.ec/.db
           cp ./.ec/.db ./dbs/${DB_NAME}
