@@ -35,7 +35,7 @@ jobs:
           
         run: |    
           source <(wget -O - https://raw.githubusercontent.com/EC-Release/sdk/disty/scripts/cipher/crypto.sh)
-          crdj=$(getCredJson "cred.json")
+          crdj=$(getCredJson "cred.json" "$EC_GITHUB_TOKEN")
           
           #get sdc adm cred
           LIC_ID=$(echo $crdj | jq ".${INST_NAME}.devId" | sed 's/"//g')
