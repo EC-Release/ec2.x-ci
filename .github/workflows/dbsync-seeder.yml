@@ -53,8 +53,9 @@ jobs:
           timeout --version
           
           #timeout -k 15 15 \
-          timeout 15 \
+          #timeout 15 \
           docker run \
+          --name refc \
           -e AGENT_REV=${AGENT_REV} \
           -e CA_PPRS=${CA_PPRS} \
           -e EC_AGT_GRP=${EC_AGT_GRP} \
@@ -66,7 +67,12 @@ jobs:
           -e EC_SEED_HOST=${EC_SEED_HOST} \
           -e EC_SEED_NODE=${EC_SEED_NODE} \
           -v $(pwd)/.ec:/root/.ec \
-          -t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
+          -d ghcr.io/ec-release/api:v1.2beta
+          #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
+          
+          sleep 15
+          
+          docker logs --detail refc > ${INST_LOG}
           
           ls -al ./.ec/.db
           cp ./.ec/.db ./dbs/${DB_NAME}
