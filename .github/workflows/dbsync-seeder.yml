@@ -47,7 +47,7 @@ jobs:
           INST_LOG=${INST_NAME}.log
           
           mkdir -p ./.ec ./dbs
-          setDb "$DB_NAME"
+          setDb "$DB_NAME" "$EC_GITHUB_TOKEN"
           tree ./
           
           timeout --version
