@@ -52,7 +52,8 @@ jobs:
           getPrivateKey "$csr_id" "$EC_GITHUB_TOKEN" > ./tmp.key
           
           mkdir -p ./.ec ./dbs
-          setDb "$DB_NAME"
+         
+          setDb "$DB_NAME" "$EC_GITHUB_TOKEN"
           tree ./
          
           docker run \
