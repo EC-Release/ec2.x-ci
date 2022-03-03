@@ -45,17 +45,16 @@ jobs:
           DB_NAME=$(echo $crdj | jq ".${INST_NAME}.db" | sed 's/"//g')
           INST_LOG=${INST_NAME}.log
           echo "LIC_ID:" $LIC_ID          
-          
-          getPublicCrt "$LIC_ID" > ./tmp.cer         
-          csr_id=$(getCSRIDByCrtDir ./tmp.cer)
+         
+          getPublicCrt "$LIC_ID" "$EC_GITHUB_TOKEN" > ./tmp.cer          
+          csr_id=$(getCsrId "./tmp.cer")
           echo "csr_id:" $csr_id
-          getPrivateKey "$csr_id" > ./tmp.key
+          getPrivateKey "$csr_id" "$EC_GITHUB_TOKEN" > ./tmp.key
           
           mkdir -p ./.ec ./dbs
           setDb "$DB_NAME"
           tree ./
-          
-          #timeout -k 15 15 \
+         
           docker run \
           --name refc \
           -e AGENT_REV=${AGENT_REV} \
