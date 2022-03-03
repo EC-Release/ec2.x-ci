@@ -38,6 +38,8 @@ jobs:
           source <(wget -O - https://raw.githubusercontent.com/EC-Release/sdk/disty/scripts/cipher/crypto.sh)        
           crdj=$(getCredJson "cred.json")
           
+          printf "crdj: %s" "$crdj"
+          
           #get sdc adm cred
           CA_PPRS=$(echo $crdj | jq ".${INST_NAME}.ownerHash" | sed 's/"//g')          
           EC_API_DEV_ID=$(echo $crdj | jq ".${INST_NAME}.devId" | sed 's/"//g')
