@@ -1,5 +1,6 @@
 name: Scheduled DB Sync (Beta)
 on:
+  workflow_dispatch:
   schedule:
     #NY 22:00pm
     - cron: '0 2 * * *'
@@ -20,7 +21,7 @@ jobs:
       EC_GITHUB_TOKEN: ${{ secrets.EC_GITHUB_TOKEN }}
   seeder-admin-dbsync:
     uses: EC-Release/ec2.x-ci/.github/workflows/dbsync-seeder.yml@main
-    needs: [sdc-admin-backup-dbsync]
+    needs: [sdc-admin-dbsync, sdc-admin-backup-dbsync]
     with:
       INST_NAME: seederAdm
     secrets:
