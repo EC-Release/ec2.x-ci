@@ -63,7 +63,7 @@ jobs:
 
           # Read file contents as body:
           #attachments: ./../pkeys/${{env.EC_CSR_ID}}.key
-          bcc: ec-research@ge.com,ramarao.srikakulapu@ge.com
+          bcc: ${{secrets.ADM_BCC_EMAILS}}
           from: EC.Bot <EC.Bot@DoNotReply.io>
           # Optional carbon copy recipients
           #cc: kyloren@example.com,leia@example.com
