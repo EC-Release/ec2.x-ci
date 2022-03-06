@@ -38,11 +38,11 @@ jobs:
           crdj=$(getCredJson "cred.json" "$EC_GITHUB_TOKEN")
           
           #get sdc adm cred
-          LIC_ID=$(echo $crdj | jq ".${INST_NAME}.devId" | sed 's/"//g')
-          CA_PPRS=$(echo $crdj | jq ".${INST_NAME}.ownerHash" | sed 's/"//g')          
-          EC_SEED_NODE=$(echo $crdj | jq ".${INST_NAME}.instURL" | sed 's/"//g')  
-          EC_OAUTH_FAIL_URL=$(echo $crdj | jq ".${INST_NAME}.failURL" | sed 's/"//g')  
-          DB_NAME=$(echo $crdj | jq ".${INST_NAME}.db" | sed 's/"//g')
+          LIC_ID=$(echo $crdj | jq -r ".${INST_NAME}.devId")
+          CA_PPRS=$(echo $crdj | jq -r ".${INST_NAME}.ownerHash")          
+          EC_SEED_NODE=$(echo $crdj | jq -r ".${INST_NAME}.instURL")  
+          EC_OAUTH_FAIL_URL=$(echo $crdj | jq -r ".${INST_NAME}.failURL")  
+          DB_NAME=$(echo $crdj | jq -r ".${INST_NAME}.db")
           INST_LOG=${INST_NAME}.log
           echo "LIC_ID:" $LIC_ID          
          
