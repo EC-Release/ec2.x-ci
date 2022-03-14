@@ -67,7 +67,7 @@ jobs:
           -e EC_PVTKEY=$(cat ./tmp.key|base64 -w0) \
           -e EC_SEED_HOST=${EC_SEED_HOST} \
           -e EC_SEED_NODE=${EC_SEED_NODE} \
-          -v $(pwd)/.ec:/root/.ec \
+          -v $(pwd)/.ec/.db:/root/.ec/.db \
           -d ghcr.io/ec-release/oauth:v1.2beta
           #-t ghcr.io/ec-release/oauth:v1.2beta | tee -a ${INST_LOG} >/dev/null
           
