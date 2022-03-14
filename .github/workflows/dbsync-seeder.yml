@@ -67,7 +67,7 @@ jobs:
           -e EC_SEED_HOST=${EC_SEED_HOST} \
           -e EC_SEED_NODE=${EC_SEED_NODE} \
           -v $(pwd)/.ec/.db:/root/.ec/.db \
-          -d ghcr.io/ec-release/api:v1.2beta
+          -d ghcr.io/ec-release/api:1.2-b
           #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
           
           sleep 15
