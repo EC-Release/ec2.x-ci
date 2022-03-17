@@ -46,12 +46,13 @@ jobs:
           INST_LOG=${INST_NAME}.log
           
           EC_SEED_HOST="http://localhost${EC_PORT}"
+          ref=$(getURLHostnameAndPort "$EC_SEED_HOST")
+          LOG_URL=$(printf 'ws://%s/v1.2beta/ec/log' "$ref")
           
           mkdir -p ./.ec ./dbs
           setDb "$DB_NAME" "$EC_GITHUB_TOKEN"
           tree ./
-          
-          timeout --version
+         
           
           #timeout -k 15 15 \
           #timeout 15 \
@@ -71,8 +72,6 @@ jobs:
           -d ghcr.io/ec-release/api:1.2-b
           #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
  
-          ref=$(getURLHostnameAndPort "$EC_SEED_HOST")
-          LOG_URL=$(printf 'ws://%s/v1.2beta/ec/log' "$ref")
           
           while :
           do
