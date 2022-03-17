@@ -59,7 +59,7 @@ do
   }
 done          
 
-if (( $x == $count )); then
+if (( "$x" > "$count" )); then
   echo failed connecting to seeder 
   exit 0
 fi
