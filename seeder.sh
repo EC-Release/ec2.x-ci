@@ -1,7 +1,5 @@
 #!/bin/bash
 
-python --version
-exit 1
 source <(wget -O - https://raw.githubusercontent.com/EC-Release/sdk/disty/scripts/cipher/crypto.sh)        
 crdj=$(getCredJson "cred.json" "$EC_GITHUB_TOKEN")
 
