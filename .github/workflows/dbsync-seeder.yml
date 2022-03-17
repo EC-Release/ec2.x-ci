@@ -47,6 +47,7 @@ jobs:
           
           EC_SEED_HOST="http://localhost${EC_PORT}"
           ref=$(getURLHostnameAndPort "$EC_SEED_HOST")
+          echo ref: $ref
           LOG_URL=$(printf 'ws://%s/v1.2beta/ec/log' "$ref")
           
           mkdir -p ./.ec ./dbs
