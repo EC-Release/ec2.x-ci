@@ -13,6 +13,7 @@ INST_LOG=${INST_NAME}.log
 
 EC_SEED_HOST="http://localhost${EC_PORT}"
 ref=$(getURLHostnameAndPort "$EC_SEED_HOST")
+ref2=$(getURLPort "$EC_SEED_HOST")
 LOG_URL=$(printf 'ws://%s/v1.2beta/ec/log' "$ref")
 
 mkdir -p ./.ec ./dbs
@@ -35,7 +36,7 @@ docker run \
 -e EC_SEED_HOST=${EC_SEED_HOST} \
 -e EC_SEED_NODE=${EC_SEED_NODE} \
 -v $(pwd)/.ec/.db:/root/.ec/.db \
--p $EC_PORT:$EC_PORT \
+-p $ref2:$ref2 \
 -d ghcr.io/ec-release/api:1.2-b
 #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
 
