@@ -48,7 +48,7 @@ do
     {
       sleep 1
       echo - connecting log host: "$LOG_URL"
-      agent -log -url "$LOG_URL" \
+      timeout -k 15 15 agent -log -url "$LOG_URL" \
       -tkn $(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2") \
       tee -a "$INST_LOG"
     } && {
