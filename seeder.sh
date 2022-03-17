@@ -41,16 +41,21 @@ docker run \
 #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
 
 
-while :
+x=1
+while [ $x -le 20 ]
 do
   {
-    sleep 0.5
-    echo - connecting log host: "$LOG_URL"
-    agent -log -url "$LOG_URL" \
-    -tkn $(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2") \
-    tee -a "$INST_LOG"
-  } && {
-    break
+    {
+      sleep 1
+      echo - connecting log host: "$LOG_URL"
+      agent -log -url "$LOG_URL" \
+      -tkn $(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2") \
+      tee -a "$INST_LOG"
+    } && {
+      break
+    }
+  } || {
+    x=$(( $x + 1 ))
   }
 done          
 
