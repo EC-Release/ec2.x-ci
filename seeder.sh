@@ -12,6 +12,7 @@ DB_NAME=$(echo $crdj | jq -r ".${INST_NAME}.db")
 INST_LOG=${INST_NAME}.log
 
 EC_SEED_HOST="http://localhost${EC_PORT}"
+echo EC_SEED_HOST: $EC_SEED_HOST
 ref=$(getURLHostnameAndPort "$EC_SEED_HOST")
 echo ref: $ref
 LOG_URL=$(printf 'ws://%s/v1.2beta/ec/log' "$ref")
