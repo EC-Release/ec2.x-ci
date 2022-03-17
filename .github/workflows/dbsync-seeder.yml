@@ -71,7 +71,8 @@ jobs:
           -d ghcr.io/ec-release/api:1.2-b
           #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
  
-          LOG_URL=$(printf 'ws://%s/v1.2beta/ec/log' "$(getURLHostnameAndPort ${EC_SEED_HOST})")
+          ref=$(getURLHostnameAndPort "$EC_SEED_HOST")
+          LOG_URL=$(printf 'ws://%s/v1.2beta/ec/log' "$ref")
           
           while :
           do
