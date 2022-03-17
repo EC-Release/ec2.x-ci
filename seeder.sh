@@ -41,8 +41,8 @@ docker run \
 #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
 
 
-x=1
-while [ $x -le 20 ]
+x=1; count=20
+while [ $x -le "$count" ]
 do
   {
     {
@@ -58,6 +58,11 @@ do
     x=$(( $x + 1 ))
   }
 done          
+
+if (( $x == $count )); then
+  echo failed connecting to seeder 
+  exit 0
+fi
 
 docker logs refc > ~tmp
 ${INST_LOG} >> ~tmp
