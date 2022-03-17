@@ -31,7 +31,6 @@ jobs:
           EC_AGT_MODE: x:gateway
           EC_API_APP_NAME: ec
           EC_PORT: ":17990"
-          EC_SEED_HOST: "http://localhost:17790"
           EC_GITHUB_TOKEN: ${{ secrets.EC_GITHUB_TOKEN }}
           INST_NAME: ${{ inputs.INST_NAME || github.event.inputs.INST_NAME }}
         run: |
@@ -45,6 +44,8 @@ jobs:
           EC_SEED_NODE=$(echo $crdj | jq -r ".${INST_NAME}.instURL")  
           DB_NAME=$(echo $crdj | jq -r ".${INST_NAME}.db")
           INST_LOG=${INST_NAME}.log
+          
+          EC_SEED_HOST="http://localhost${EC_PORT}"
           
           mkdir -p ./.ec ./dbs
           setDb "$DB_NAME" "$EC_GITHUB_TOKEN"
@@ -69,15 +70,30 @@ jobs:
           -v $(pwd)/.ec/.db:/root/.ec/.db \
           -d ghcr.io/ec-release/api:1.2-b
           #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
-         
-          sleep 15
+ 
           
-          docker logs refc > ${INST_LOG}
+          while :
+          do
+            {
+              sleep 0.5
+              echo - connecting log..
+              timeout 20 \          
+              agent -log -url "$EC_SEED_HOST"/v1.2beta/ec/log \
+              -tkn $(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2") \
+              tee -a ${INST_LOG}
+            } && {
+              break
+            }
+          done          
           
+          docker logs refc > ~tmp
+          ${INST_LOG} >> ~tmp
+
           ls -al ./.ec/.db
           cp ./.ec/.db ./dbs/${DB_NAME}
-          cp ${INST_LOG} ./dbs/${INST_LOG}
+          cp ${INST_LOG} ./dbs/${INST_LOG}                    
           
+           
       - name: Seeder DB Check-in
         id: sdr-db-check-in
         uses: ec-release/github-action-copy-files-folders-to-another-repos@main
