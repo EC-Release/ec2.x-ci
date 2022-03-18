@@ -43,7 +43,7 @@ do
   {
     {
       sleep 1
-      echo - connecting log host: "$EC_SEED_HOST"
+      #echo - connecting log host: "$EC_SEED_HOST"
       sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")
       #loggerUp "$LOG_URL" "$sk" | tee -a "$INST_LOG"
       loggerUp "$EC_SEED_HOST" "$sk"
