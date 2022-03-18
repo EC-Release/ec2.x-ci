@@ -46,7 +46,7 @@ do
       sleep 1
       echo - connecting log host: "$LOG_URL"
       sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")
-      timeout -k 15 15 $(loggerUp "$LOG_URL" $sk) | tee -a "$INST_LOG"
+      loggerUp "$LOG_URL" "$sk" | tee -a "$INST_LOG"
     } && {
       break
     }
