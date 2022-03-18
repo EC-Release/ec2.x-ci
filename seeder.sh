@@ -45,14 +45,20 @@ while [ $x -le "$count" ]
 do  
     sleep 0.5
     #echo - connecting log host: "$EC_SEED_HOST"
-    loggerUp "$EC_SEED_HOST" "$sk" >> ${INST_LOG} &
-    sleep 0.5
+    {
+      loggerUp "$EC_SEED_HOST" "$sk" >> ${INST_LOG} &
+    } || {
+      if [[ "$?" != 0 ]]; then
+        x=$(( $x + 1 ));
+        continue    
+      fi
+    }
+      
     if pgrep -x "agent" > /dev/null; then
       sleep 10
-    else
-      x=$(( $x + 1 ));
-      continue    
-    fi
+      break
+    fi           
+    
     
     #if [[ "${PIPESTATUS[0]}" == 1 ]]; then
     #  x=$(( $x + 1 ));
