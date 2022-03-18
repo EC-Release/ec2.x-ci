@@ -47,7 +47,7 @@ do
       sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")
       #loggerUp "$LOG_URL" "$sk" | tee -a "$INST_LOG"
       loggerUp "$EC_SEED_HOST" "$sk" | tee -a "$INST_LOG"
-      exit "$?"
+      exit "${PIPESTATUS[0]}"
     } && {
       echo logger terminated on ["$x"]
       break
