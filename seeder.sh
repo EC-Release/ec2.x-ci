@@ -58,7 +58,7 @@ done
 
 if (( "$x" > "$count" )); then
   echo failed connecting to seeder 
-  exit 0
+  exit 1
 fi
 
 docker logs refc > ~tmp
