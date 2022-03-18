@@ -45,15 +45,23 @@ while [ $x -le "$count" ]
 do  
     sleep 0.5
     #echo - connecting log host: "$EC_SEED_HOST"
-    timeout -k 15 15 $(loggerUp "$EC_SEED_HOST" "$sk") | tee -a ${INST_LOG} > /dev/null
-    
-    if [[ "${PIPESTATUS[0]}" == 1 ]]; then
+    loggerUp "$EC_SEED_HOST" "$sk" | tee -a ${INST_LOG} > /dev/null &
+    sleep 0.5
+    if pgrep -x "agent" > /dev/null
+    then
+      sleep 10
+    else
       x=$(( $x + 1 ));
-      continue
+      continue    
     fi
     
+    #if [[ "${PIPESTATUS[0]}" == 1 ]]; then
+    #  x=$(( $x + 1 ));
+    #  continue
+    #fi
+    
     #if [[ "${PIPESTATUS[0]}" == 124 || "${PIPESTATUS[0]}" == 137 ]]; then
-    echo logger terminated on ["$x"] with code "${PIPESTATUS[0]}"
+    #echo logger terminated on ["$x"] with code "${PIPESTATUS[0]}"
     break
     
 done          
