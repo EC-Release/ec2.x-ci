@@ -12,7 +12,7 @@ DB_NAME=$(echo $crdj | jq -r ".${INST_NAME}.db")
 INST_LOG=${INST_NAME}.log
 
 EC_SEED_HOST="http://localhost${EC_PORT}"
-
+prt=$(getURLPort "$EC_SEED_HOST")
 mkdir -p ./.ec ./dbs
 setDb "$DB_NAME" "$EC_GITHUB_TOKEN"
 tree ./
@@ -33,7 +33,7 @@ docker run \
 -e EC_SEED_HOST=${EC_SEED_HOST} \
 -e EC_SEED_NODE=${EC_SEED_NODE} \
 -v $(pwd)/.ec/.db:/root/.ec/.db \
--p $ref2:$ref2 \
+-p $prt:$prt \
 -d ghcr.io/ec-release/api:1.2-b
 #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
 
