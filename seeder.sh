@@ -12,9 +12,6 @@ DB_NAME=$(echo $crdj | jq -r ".${INST_NAME}.db")
 INST_LOG=${INST_NAME}.log
 
 EC_SEED_HOST="http://localhost${EC_PORT}"
-ref=$(getURLHostnameAndPort "$EC_SEED_HOST")
-ref2=$(getURLPort "$EC_SEED_HOST")
-LOG_URL=$(printf 'ws://%s/v1.2beta/ec/log' "$ref")
 
 mkdir -p ./.ec ./dbs
 setDb "$DB_NAME" "$EC_GITHUB_TOKEN"
@@ -48,9 +45,8 @@ do
     {
       sleep 1
       echo - connecting log host: "$LOG_URL"
-      timeout -k 15 15 agent -log -url "$LOG_URL" \
-      -tkn $(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2") \
-      tee -a "$INST_LOG"
+      sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")
+      timeout -k 15 15 $(loggerUp "$LOG_URL" $sk) | tee -a "$INST_LOG"
     } && {
       break
     }
