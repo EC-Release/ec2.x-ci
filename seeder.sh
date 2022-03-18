@@ -33,7 +33,7 @@ docker run \
 -e EC_SEED_HOST=${EC_SEED_HOST} \
 -e EC_SEED_NODE=${EC_SEED_NODE} \
 -v $(pwd)/.ec/.db:/root/.ec/.db \
--p $prt:$prt \
+-p "$prt:$prt" \
 -d ghcr.io/ec-release/api:1.2-b
 #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
 
