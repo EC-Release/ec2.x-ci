@@ -37,7 +37,6 @@ docker run \
 -d ghcr.io/ec-release/api:1.2-b
 #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
 
-
 x=1; count=20
 while [ $x -le "$count" ]
 do
@@ -48,6 +47,7 @@ do
       sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")
       loggerUp "$LOG_URL" "$sk" | tee -a "$INST_LOG"
     } && {
+      echo logger terminated on ["$x"]
       break
     }
   } || {
@@ -63,6 +63,6 @@ fi
 docker logs refc > ~tmp
 cat ${INST_LOG} >> ~tmp
 
-ls -al ./.ec/.db
+#ls -al ./.ec/.db
 cp ./.ec/.db ./dbs/${DB_NAME}
 cp ${INST_LOG} ./dbs/${INST_LOG}   
