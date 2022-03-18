@@ -37,21 +37,25 @@ docker run \
 -d ghcr.io/ec-release/api:1.2-b
 #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
 
+#sleep 15
+
+sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")    
 x=1; count=20
 while [ $x -le "$count" ]
 do  
-    sleep 1
+    sleep 0.5
     #echo - connecting log host: "$EC_SEED_HOST"
-    sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")
-    #loggerUp "$LOG_URL" "$sk" | tee -a "$INST_LOG"
-    loggerUp "$EC_SEED_HOST" "$sk" | tee -a "$INST_LOG"
+    timeout -k 15 15 loggerUp "$EC_SEED_HOST" "$sk" | tee -a ${INST_LOG} > /dev/null
+    
     if [[ "${PIPESTATUS[0]}" == 1 ]]; then
       x=$(( $x + 1 ));
       continue
     fi
     
-    echo logger terminated on ["$x"]
-    break  
+    #if [[ "${PIPESTATUS[0]}" == 124 || "${PIPESTATUS[0]}" == 137 ]]; then
+    echo logger terminated on ["$x"] with code "${PIPESTATUS[0]}"
+    break
+    
 done          
 
 if (( "$x" > "$count" )); then
