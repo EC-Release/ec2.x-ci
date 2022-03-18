@@ -61,7 +61,7 @@ if (( "$x" > "$count" )); then
 fi
 
 docker logs refc > ~tmp
-${INST_LOG} >> ~tmp
+cat ${INST_LOG} >> ~tmp
 
 ls -al ./.ec/.db
 cp ./.ec/.db ./dbs/${DB_NAME}
