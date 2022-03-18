@@ -39,7 +39,7 @@ docker run \
 
 #sleep 15
 
-sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")    
+sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")  
 x=1; count=20
 while [ $x -le "$count" ]
 do  
