@@ -37,9 +37,9 @@ docker run \
 -d ghcr.io/ec-release/api:1.2-b
 #-t ghcr.io/ec-release/api:v1.2beta | tee -a ${INST_LOG} >/dev/null
 
-#sleep 15
+sleep 15
 
-sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")  
+: 'sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")  
 x=1; count=20
 while [ $x -le "$count" ]
 do  
@@ -71,11 +71,11 @@ done
 if (( "$x" > "$count" )); then
   echo failed connecting to seeder 
   exit 1
-fi
+fi'
 
 docker logs refc > ~tmp
-cat ${INST_LOG} >> ~tmp
+#cat ${INST_LOG} >> ~tmp
 
 #ls -al ./.ec/.db
 cp ./.ec/.db ./dbs/${DB_NAME}
-cp ${INST_LOG} ./dbs/${INST_LOG}   
+cp ~tmp ./dbs/${INST_LOG}   
