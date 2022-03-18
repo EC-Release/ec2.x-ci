@@ -45,7 +45,7 @@ while [ $x -le "$count" ]
 do  
     sleep 0.5
     #echo - connecting log host: "$EC_SEED_HOST"
-    loggerUp "$EC_SEED_HOST" "$sk"   
+    loggerUp "$EC_SEED_HOST" "$sk" "$INST_LOG"
     sleep 0.5
     if pgrep -x "agent" > /dev/null; then
       echo begin agent logging..
