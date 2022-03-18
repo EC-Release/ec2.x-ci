@@ -39,22 +39,19 @@ docker run \
 
 x=1; count=20
 while [ $x -le "$count" ]
-do
-  {
-    {
-      sleep 1
-      #echo - connecting log host: "$EC_SEED_HOST"
-      sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")
-      #loggerUp "$LOG_URL" "$sk" | tee -a "$INST_LOG"
-      loggerUp "$EC_SEED_HOST" "$sk" | tee -a "$INST_LOG"
-      exit "${PIPESTATUS[0]}"
-    } && {
-      echo logger terminated on ["$x"]
-      break
-    }
-  } || {
-    x=$(( $x + 1 ))
-  }
+do  
+    sleep 1
+    #echo - connecting log host: "$EC_SEED_HOST"
+    sk=$(getSdcTkn "$EC_API_DEV_ID" "$CA_PPRS" "$EC_API_OA2")
+    #loggerUp "$LOG_URL" "$sk" | tee -a "$INST_LOG"
+    loggerUp "$EC_SEED_HOST" "$sk" | tee -a "$INST_LOG"
+    if [[ "${PIPESTATUS[0]}" == 1 ]]; then
+      x=$(( $x + 1 ));
+      continue
+    fi
+    
+    echo logger terminated on ["$x"]
+    break  
 done          
 
 if (( "$x" > "$count" )); then
