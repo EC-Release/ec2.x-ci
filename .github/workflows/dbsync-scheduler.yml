@@ -1,9 +1,9 @@
 name: Scheduled DB Sync (Beta)
 on:
   workflow_dispatch:
-  schedule:
+  #schedule:
     #NY 22:00pm
-    - cron: '0 2 * * *'
+    #- cron: '0 2 * * *'
     #- cron: '*/6 * * * *'
 jobs:
   sdc-admin-dbsync:
